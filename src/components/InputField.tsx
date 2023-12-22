@@ -25,7 +25,7 @@ const InputField = ({
     <>
       <input
         type={type}
-        className={`w-${width} border-4 p-2 rounded-md`}
+        className={`w-${width} border-2 p-2 rounded-md border-slate-500`}
         disabled={disabled}
         name={name}
         onChange={onChange}

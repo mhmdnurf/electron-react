@@ -1,9 +1,8 @@
 import React from "react";
-import BackButton from "../components/BackButton";
 import Label from "../components/Label";
 import InputField from "../components/InputField";
 import FormContainer from "../components/FormContainer";
-import { Link } from "react-router-dom";
+import { GoPencil } from "react-icons/go";
 
 interface Jadwal {
   wbs: string;
@@ -15,13 +14,12 @@ interface Jadwal {
 }
 
 const FormJadwal = (): React.JSX.Element => {
-  const [isNewClicked, setIsNewClicked] = React.useState<boolean>(false);
   const [isEditing, setIsEditing] = React.useState<boolean>(false);
   const [dataJadwal, setDataJadwal] = React.useState<Jadwal[]>([]);
   const [formData, setFormData] = React.useState<Jadwal>({
     wbs: "",
     task_proyek: "",
-    tenaga_ahli: "Novi",
+    tenaga_ahli: "Bangsyu",
     durasi: undefined,
     tgl_mulai: new Date(),
     tgl_selesai: new Date(),
@@ -108,7 +106,7 @@ const FormJadwal = (): React.JSX.Element => {
         setFormData({
           wbs: "",
           task_proyek: "",
-          tenaga_ahli: "Novi",
+          tenaga_ahli: "Bangsyu",
           durasi: 0,
           tgl_mulai: new Date(),
           tgl_selesai: new Date(),
@@ -149,7 +147,7 @@ const FormJadwal = (): React.JSX.Element => {
         setFormData({
           wbs: "",
           task_proyek: "",
-          tenaga_ahli: "Novi",
+          tenaga_ahli: "Bangsyu",
           durasi: 0,
           tgl_mulai: new Date(),
           tgl_selesai: new Date(),
@@ -170,7 +168,7 @@ const FormJadwal = (): React.JSX.Element => {
     setFormData({
       wbs: "",
       task_proyek: "",
-      tenaga_ahli: "Novi",
+      tenaga_ahli: "Bangsyu",
       durasi: 0,
       tgl_mulai: new Date(),
       tgl_selesai: new Date(),
@@ -212,7 +210,7 @@ const FormJadwal = (): React.JSX.Element => {
                   <td style="border: 1px solid black; text-transform: uppercase;">${
                     jadwal.tenaga_ahli
                   }</td>
-                  <td style="border: 1px solid black">${jadwal.durasi}</td>
+                  <td style="border: 1px solid black">${jadwal.durasi} Hari</td>
                   <td style="border: 1px solid black">${formatLocalDate(
                     jadwal.tgl_mulai
                   )}</td>
@@ -238,50 +236,39 @@ const FormJadwal = (): React.JSX.Element => {
 
   return (
     <>
-      <BackButton />
+      <div className="mx-9 mt-4 w-1/5">
+        <button
+          className="hover:transform hover:scale-105 text-lg rounded-md bg-blue-500 text-white font-semibold w-full p-3"
+          onClick={handlePrint}
+        >
+          Print
+        </button>
+      </div>
       <div className="flex flex-col">
         <div className="flex">
           <FormContainer>
-            <Label title="WBS" />
+            <Label title="Kode WBS" />
             <div className="flex">
               <InputField
                 type="text"
                 width="full"
-                disabled={!isNewClicked || isEditing}
+                disabled={isEditing}
                 name="wbs"
                 onChange={handleChange}
                 value={formData.wbs}
               />
-              <button
-                className="p-3 hover:transform hover:scale-105 ml-4 text-lg rounded-md bg-sky-500 text-white font-semibold"
-                onClick={() => {
-                  setIsNewClicked(true);
-                  setFormData({
-                    wbs: "",
-                    task_proyek: "",
-                    tenaga_ahli: "Novi",
-                    durasi: undefined,
-                    tgl_mulai: new Date(),
-                    tgl_selesai: new Date(),
-                  });
-                  setIsEditing(false);
-                }}
-              >
-                New
-              </button>
             </div>
-            <Label title="Task Proyek" />
+            <Label title="Project Task" />
             <textarea
-              className="w-full border-4 rounded-md text-sm"
+              className="w-full border-2 border-slate-500 rounded-md text-sm"
               rows={8}
-              disabled={!isNewClicked}
               name="task_proyek"
               onChange={handleChange}
               value={formData.task_proyek}
             />
           </FormContainer>
           <FormContainer>
-            <Label title="Durasi (Hari)" />
+            <Label title="Duration" />
             <div className="flex">
               <InputField
                 type="number"
@@ -291,49 +278,46 @@ const FormJadwal = (): React.JSX.Element => {
                 value={formData.durasi ?? ""}
               />
             </div>
-            <Label title="Tanggal Mulai" />
+            <Label title="Start Date" />
             <InputField
               type="date"
               width="full"
-              disabled={!isNewClicked && !isEditing}
               name="tgl_mulai"
               onChange={handleChange}
               value={formData.tgl_mulai}
             />
-            <Label title="Tanggal Selesai" />
+            <Label title="End Date" />
             <InputField
               type="date"
               width="full"
-              disabled={!isNewClicked && !isEditing}
               name="tgl_selesai"
               onChange={handleChange}
               value={formData.tgl_selesai}
             />
           </FormContainer>
           <FormContainer>
-            <Label title="Tenaga Ahli" />
+            <Label title="Person in Charge" />
             <select
-              className="p-2 border-4 rounded-md text-lg font-semibold text-slate-700"
-              disabled={!isNewClicked}
+              className="p-2 border-2 border-slate-500 rounded-md text-lg font-semibold text-slate-700"
               value={formData.tenaga_ahli}
               onChange={(e) =>
                 setFormData({ ...formData, tenaga_ahli: e.target.value })
               }
             >
-              <option value="Novi">Novi</option>
-              <option value="Dera">Dera</option>
+              <option value="Bangsyu">Bangsyu</option>
+              <option value="Fichry Kosandi">Fichry Kosandi</option>
             </select>
             {isEditing && (
               <button
                 className="hover:transform hover:scale-105 text-lg rounded-md bg-sky-500 text-white font-semibold w-full mt-8 p-3"
                 onClick={handleCancelEdit}
               >
-                Cancel Edit
+                Cancel
               </button>
             )}
-            <div className="flex justify-between items-center mt-6 w-">
+            <div className="flex justify-between items-center mt-6 w-full flex-col">
               <button
-                className={`hover:transform hover:scale-105 text-lg rounded-md ${
+                className={`hover:transform hover:scale-105 mb-2 w-full text-lg rounded-md ${
                   isEditing ? "bg-yellow-500" : "bg-green-500"
                 }${
                   isFormValid ? "" : " bg-opacity-50 cursor-not-allowed"
@@ -341,9 +325,8 @@ const FormJadwal = (): React.JSX.Element => {
                 onClick={handleSubmit}
                 disabled={!isFormValid}
               >
-                {isEditing ? "Update" : "Save"}
+                {isEditing ? "Update" : "Submit"}
               </button>
-
               {isEditing && (
                 <button
                   className="hover:transform hover:scale-105 text-lg rounded-md bg-red-500 text-white font-semibold w-1/2 ml-2 p-3"
@@ -355,14 +338,14 @@ const FormJadwal = (): React.JSX.Element => {
             </div>
           </FormContainer>
         </div>
-        <h1 className="text-center text-2xl font-semibold text-slate-700 my-4">
-          Tabel Jadwal Proyek
+        <h1 className="ml-10 mt-10 text-2xl font-semibold text-slate-700 my-4">
+          Data Jadwal Proyek
         </h1>
         <div className="flex mb-10">
-          <div className="mx-10 mt-2 flex flex-col w-3/4">
+          <div className="mx-10 mt-2 flex flex-col w-full">
             <div className="max-h-[10em] overflow-auto">
               {dataJadwal && dataJadwal.length > 0 ? (
-                <table className="auto  w-full bg-white rounded-lg text-slate-700 uppercase">
+                <table className="auto  w-full bg-white rounded-lg border-2 border-slate-500 text-slate-700 uppercase">
                   <thead className="font-extralight text-sm shadow-md">
                     <tr className="">
                       <th className="p-2">No.</th>
@@ -372,12 +355,15 @@ const FormJadwal = (): React.JSX.Element => {
                       <th className="px-10">Durasi</th>
                       <th className="px-10">Tgl.Mulai</th>
                       <th className="px-10">Tgl.Selesai</th>
-                      <th className="px-10">Aksi</th>
+                      <th className="px-10">Action</th>
                     </tr>
                   </thead>
-                  <tbody className="text-center rounded-b-md text-sm font-semibold">
+                  <tbody className="text-center rounded-b-md text-sm font-semibold border-2 border-slate-500">
                     {dataJadwal.map((jadwal, index) => (
-                      <tr key={jadwal.wbs} className="border-b-2">
+                      <tr
+                        key={jadwal.wbs}
+                        className="border-2 border-slate-500"
+                      >
                         <td className="p-4">{index + 1}</td>
                         <td>{jadwal.wbs}</td>
                         <td className="whitespace-pre-wrap-">
@@ -392,7 +378,7 @@ const FormJadwal = (): React.JSX.Element => {
                             className="hover:transform hover:scale-105 text-lg rounded-md bg-sky-500 text-white font-semibold ml-2 p-1"
                             onClick={() => handleEdit(jadwal)}
                           >
-                            Edit
+                            <GoPencil />
                           </button>
                         </td>
                       </tr>
@@ -401,25 +387,12 @@ const FormJadwal = (): React.JSX.Element => {
                 </table>
               ) : (
                 <p className="text-center text-lg font-semibold text-slate-700 mt-10">
-                  Tidak ada data jadwal
+                  No Data
                 </p>
               )}
             </div>
           </div>
-          <div className="flex flex-col items-center">
-            <button
-              className="hover:transform hover:scale-105 text-lg rounded-md bg-lime-500 text-white font-semibold w-full p-3"
-              onClick={handlePrint}
-            >
-              Print Jadwal
-            </button>
-            <Link
-              to={"/"}
-              className="text-center hover:transform hover:scale-105 text-lg rounded-md bg-amber-500 text-white font-semibold w-full mt-4 p-3"
-            >
-              Menu
-            </Link>
-          </div>
+          <div className="flex flex-col items-center">{/* jajajasja */}</div>
         </div>
       </div>
     </>
